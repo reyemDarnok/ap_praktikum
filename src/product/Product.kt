@@ -4,7 +4,7 @@ import review.Review
 import kotlin.math.log10
 
 open class Product(val productName: String, val basePrice: Double, open val salesPrice: Double, val description: String) {
-    private companion object Maxima {
+    companion object Maxima {
         var longestName: Int = 0
         var longestPrice: Int = 0
         var longestAmount: Int = 0
