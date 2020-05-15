@@ -1,4 +1,3 @@
-import java.lang.NumberFormatException
 import kotlin.random.Random
 
 object App {
@@ -10,7 +9,7 @@ object App {
         for (i in 0..10){
             warehouse.fillWarehouse("Name $i", Random.nextDouble(0.0, 20.0),"Description $i")
         }
-        print(warehouse.productDescriptions())
+        print(warehouse.productDescriptions)
 
         mainloop@ while(true){
             println("H=Hinzufügen   K=Alles kaufen  I=Info Z=Einkaufs-Liste zeigen  L=Liste leeren  E=Exit" )
@@ -30,7 +29,7 @@ object App {
     }
 
     private fun showBasket() {
-        print(shoppingCart.listOfAllProducts())
+        print(shoppingCart.listOfAllProducts)
     }
 
     private fun emptyBasket() {
@@ -39,7 +38,7 @@ object App {
     }
 
     private fun buy() {
-        println("Wirklich kaufen? Der Preis ist %.2f€ (Ny)".format(shoppingCart.totalPrice()))
+        println("Wirklich kaufen? Der Preis ist %.2f€ (Ny)".format(shoppingCart.totalPrice))
         if(readLine() == "y"){
             println("Für %.2f€ Euro eingekauft".format(shoppingCart.buyEverything()))
         } else {
@@ -48,7 +47,7 @@ object App {
     }
 
     private fun info() {
-        print(warehouse.productDescriptions())
+        print(warehouse.productDescriptions)
     }
 
     private fun add() {
@@ -91,7 +90,7 @@ object App {
                     println("1 $productName wurde der Einkaufsliste hinzugefügt")
                 }
             } else {
-                println("Es sind leider nur noch ${product.availableItems()} auf Lager")
+                println("Es sind leider nur noch ${product.availableItems} auf Lager")
             }
         } else {
             if(product.isPreferredQuantityAvailable(quantity)) {
@@ -102,14 +101,14 @@ object App {
                     println("1 $productName wurde der Einkaufsliste hinzugefügt")
                 }
             } else {
-                println("Es sind leider nur noch ${product.availableItems()} auf Lager")
+                println("Es sind leider nur noch ${product.availableItems} auf Lager")
             }
         }
     }
 
     private fun getIndexByProductName(productName: String): Int{
         for(i in 0 until shoppingCart.productAndQuantityList.size){
-            var (product, quantity) = shoppingCart.productAndQuantityList[i]
+            val (product, _) = shoppingCart.productAndQuantityList[i]
             if(product.productName == productName){
                 return i
             }
