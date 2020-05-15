@@ -1,5 +1,6 @@
 import groups.ShoppingCart
 import groups.Warehouse
+import product.ProductNames
 import review.Review
 import kotlin.random.Random
 
@@ -10,8 +11,11 @@ object App {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        for (i in 0..10){
-            warehouse.fillWarehouse("Name $i", Random.nextDouble(0.0, 20.0),"Description $i")
+        val names = mutableListOf(*ProductNames.values())
+        for (i in 0..10) {
+            val rand = Random.nextInt(names.size)
+            warehouse.fillWarehouse(names[rand].name, Random.nextDouble(0.0, 20.0), names[rand].description)
+            names.remove(names[rand])
         }
         print(warehouse.listOfProducts)
 
@@ -58,16 +62,16 @@ object App {
             println("Das Produkt ist leider nicht vorhanden")
             return
         }
-        println(product.toString())
+        println(product.describe())
         if (product.reviews.isNotEmpty()) {
             val worstReview: Review = product.reviews.min() ?: product.reviews[0]
             val bestReview: Review = product.reviews.max() ?: product.reviews[0]
             val sumOfRatings = product.reviews.sumBy { it.stars() }
             println("Durchschnittliche Bewertung: %.1f".format(sumOfRatings.toDouble() / product.reviews.size))
             println("Beste Bewertung:")
-            println(bestReview.info())
+            println('\t' + bestReview.info())
             println("Schlechteste Bewertung:")
-            println(worstReview.info())
+            println('\t' + worstReview.info())
         }
     }
 

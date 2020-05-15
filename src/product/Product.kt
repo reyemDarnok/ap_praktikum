@@ -22,18 +22,22 @@ open class Product(val productName: String, val basePrice: Double, open val sale
 
 
     override fun toString(): String {
-        return productName + " Preis: %.2f€ (".format(salesPrice) + description + ") ($availableItems auf Lager)"
+        return productName + " %.2f€ ".format(salesPrice) + "x $availableItems"
+    }
+
+    fun describe(): String {
+        return productName + "\n\tPreis: %.2f€\n\t".format(salesPrice) + description + "\n\t$availableItems auf Lager"
     }
 
     fun addStock(items: StockUnit) {
         stockUnits.add(items)
     }
 
-    fun addReview(review: Review){
+    fun addReview(review: Review) {
         reviews.add(review)
     }
 
-    fun cleanStock(){
+    fun cleanStock() {
         stockUnits = stockUnits.filterNot { it.isExpired || it.quantity == 0 } as MutableList<StockUnit>
     }
 

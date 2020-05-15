@@ -9,7 +9,7 @@ enum class ProductNames(val description: String) {
     Saft("Keine Verbindung mit Space Balls©℗®™"),
     Banane("Ein nützliches Messinstrument"),
     Brot("Bernd wollte diesen Eintrag entfernen"),
-    Kuchen("Diesmal wirklich da"),
+    Kuchen("Ungelogen"),
     Ananas("Noch sinnfreier als die goldene Variante"),
     Gurke("AUSSCHLIEẞLICH ZUM VERZEHR BEABSICHTIGT"),
     Zwiebeln("Auch vefügbar als Ninja-Variante")
