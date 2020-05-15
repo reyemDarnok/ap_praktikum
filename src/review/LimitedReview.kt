@@ -1,3 +1,5 @@
+package review
+
 import kotlin.math.round
 
 class LimitedReview(uncheckedPoints: Double, private val comment: String) : Review {

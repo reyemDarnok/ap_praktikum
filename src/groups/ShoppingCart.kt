@@ -1,3 +1,7 @@
+package groups
+
+import product.Product
+
 class ShoppingCart {
     val productAndQuantityList: ArrayList<Pair<Product, Int>> = ArrayList()
 

@@ -1,3 +1,5 @@
+package review
+
 class SmartReview(private val points: Int) : Review {
     override fun stars(): Int {
         return points

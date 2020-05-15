@@ -1,7 +1,9 @@
-class StockUnit(var quantity: Int,daysBeforeExpiration: Int){
+package product
+
+class StockUnit(var quantity: Int, daysBeforeExpiration: Int) {
 
     val isExpired: Boolean
-        get() =  daysBeforeExpiration < 0
+        get() = daysBeforeExpiration < 0
 
 
     var daysBeforeExpiration: Int = daysBeforeExpiration

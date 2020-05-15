@@ -1,3 +1,7 @@
+package product
+
+import review.Review
+
 open class Product(val productName: String, val basePrice: Double, open val salesPrice: Double, val description: String) {
     val reviews: MutableList<Review> = mutableListOf()
     private var stockUnits: MutableList<StockUnit> = mutableListOf()

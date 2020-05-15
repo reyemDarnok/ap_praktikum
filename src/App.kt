@@ -1,8 +1,12 @@
+import groups.ShoppingCart
+import groups.Warehouse
+import review.Review
 import kotlin.random.Random
 
 object App {
     private val warehouse: Warehouse = Warehouse()
     private val shoppingCart: ShoppingCart = ShoppingCart()
+
     @JvmStatic
     fun main(args: Array<String>) {
 

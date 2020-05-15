@@ -1,3 +1,10 @@
+package groups
+
+import product.Product
+import product.StockUnit
+import review.LimitedReview
+import review.PlainReview
+import review.SmartReview
 import kotlin.random.Random
 
 class Warehouse {

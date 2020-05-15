@@ -1,3 +1,5 @@
+package review
+
 interface Review : Comparable<Review> {
     fun stars(): Int
     fun info(): String
