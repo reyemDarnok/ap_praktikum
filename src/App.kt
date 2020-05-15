@@ -47,16 +47,37 @@ object App {
     }
 
     private fun info() {
-        print(warehouse.productDescriptions)
+        print("Produktname:")
+        val productName = readLine() ?: ""
+        val product = warehouse.getProductByName(productName)
+        if (product == null) {
+            println("Das Produkt ist leider nicht vorhanden")
+            return
+        }
+        println(product.toString())
+        if (product.reviews.isNotEmpty()) {
+            var worstReview: Review = product.reviews[0]
+            var bestReview: Review = product.reviews[0]
+            var sumOfRatings = 0.0
+            for (review: Review in product.reviews) {
+                if (review < worstReview) {
+                    worstReview = review
+                } else if (review > bestReview) {
+                    bestReview = review
+                }
+                sumOfRatings += review.stars()
+            }
+            println("Durchschnittliche Bewertung: %.1f".format(sumOfRatings / product.reviews.size))
+            println("Beste Bewertung:")
+            println(bestReview.info())
+            println("Schlechteste Bewertung:")
+            println(worstReview.info())
+        }
     }
 
     private fun add() {
         print("Produktname: ")
         val productName = readLine() ?: ""
-        if(productName == ""){
-            println("Bitte einen Namen angeben!")
-            return
-        }
         val product = warehouse.getProductByName(productName)
         if(product == null){
             println("Das Produkt ist leider nicht vorhanden")

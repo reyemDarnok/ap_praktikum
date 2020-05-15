@@ -1,5 +1,5 @@
 open class Product(val productName: String, val basePrice: Double, open val salesPrice: Double, val description: String) {
-    private var reviews: ArrayList<Review> = ArrayList()
+    val reviews: ArrayList<Review> = ArrayList()
     private var stockUnits: ArrayList<StockUnit> = ArrayList()
 
     val profitPerItem: Double
@@ -38,7 +38,7 @@ open class Product(val productName: String, val basePrice: Double, open val sale
     fun cleanStock(){
         var offset = 0
         for(i in 0 until stockUnits.size){
-            var correctedIndex = i - offset
+            val correctedIndex = i - offset
             if(stockUnits[correctedIndex].isExpired || stockUnits[correctedIndex].quantity==0){
                 stockUnits.removeAt(i - offset)
                 offset++

@@ -10,4 +10,6 @@ class PlainReview(private val points: Int) : Review {
             "Produkt mit %d Stern.".format(points)
         }
     }
+
+
 }
