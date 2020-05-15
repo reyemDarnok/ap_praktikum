@@ -9,7 +9,7 @@ object App {
         for (i in 0..10){
             warehouse.fillWarehouse("Name $i", Random.nextDouble(0.0, 20.0),"Description $i")
         }
-        print(warehouse.productDescriptions)
+        print(warehouse.listOfProducts)
 
         mainloop@ while(true){
             println("H=Hinzufügen   K=Alles kaufen  I=Info Z=Einkaufs-Liste zeigen  L=Liste leeren  E=Exit" )
@@ -56,18 +56,10 @@ object App {
         }
         println(product.toString())
         if (product.reviews.isNotEmpty()) {
-            var worstReview: Review = product.reviews[0]
-            var bestReview: Review = product.reviews[0]
-            var sumOfRatings = 0.0
-            for (review: Review in product.reviews) {
-                if (review < worstReview) {
-                    worstReview = review
-                } else if (review > bestReview) {
-                    bestReview = review
-                }
-                sumOfRatings += review.stars()
-            }
-            println("Durchschnittliche Bewertung: %.1f".format(sumOfRatings / product.reviews.size))
+            val worstReview: Review = product.reviews.min() ?: product.reviews[0]
+            val bestReview: Review = product.reviews.max() ?: product.reviews[0]
+            val sumOfRatings = product.reviews.sumBy { it.stars() }
+            println("Durchschnittliche Bewertung: %.1f".format(sumOfRatings.toDouble() / product.reviews.size))
             println("Beste Bewertung:")
             println(bestReview.info())
             println("Schlechteste Bewertung:")
@@ -128,13 +120,7 @@ object App {
     }
 
     private fun getIndexByProductName(productName: String): Int{
-        for(i in 0 until shoppingCart.productAndQuantityList.size){
-            val (product, _) = shoppingCart.productAndQuantityList[i]
-            if(product.productName == productName){
-                return i
-            }
-        }
-        return -1
+        return shoppingCart.productAndQuantityList.indexOfFirst { it.first.productName == productName }
     }
 
 }

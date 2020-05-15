@@ -1,6 +1,6 @@
 open class Product(val productName: String, val basePrice: Double, open val salesPrice: Double, val description: String) {
-    val reviews: ArrayList<Review> = ArrayList()
-    private var stockUnits: ArrayList<StockUnit> = ArrayList()
+    val reviews: MutableList<Review> = mutableListOf()
+    private var stockUnits: MutableList<StockUnit> = mutableListOf()
 
     val profitPerItem: Double
         get() = salesPrice - basePrice
@@ -11,23 +11,17 @@ open class Product(val productName: String, val basePrice: Double, open val sale
 
 
     val salesValueOfAllItems: Double
-        get() =  availableItems * salesPrice
+        get() = availableItems * salesPrice
 
     val availableItems: Int
-        get() {
-            var sum = 0
-            for (unit: StockUnit in stockUnits) {
-                sum += unit.quantity
-            }
-            return sum
-        }
+        get() = stockUnits.sumBy { it.quantity }
 
 
     override fun toString(): String {
-        return productName + " Preis: %.2f€ (".format(salesPrice) + description + ") (${availableItems} auf Lager)"
+        return productName + " Preis: %.2f€ (".format(salesPrice) + description + ") ($availableItems auf Lager)"
     }
 
-    fun addStock(items: StockUnit){
+    fun addStock(items: StockUnit) {
         stockUnits.add(items)
     }
 
@@ -36,14 +30,7 @@ open class Product(val productName: String, val basePrice: Double, open val sale
     }
 
     fun cleanStock(){
-        var offset = 0
-        for(i in 0 until stockUnits.size){
-            val correctedIndex = i - offset
-            if(stockUnits[correctedIndex].isExpired || stockUnits[correctedIndex].quantity==0){
-                stockUnits.removeAt(i - offset)
-                offset++
-            }
-        }
+        stockUnits = stockUnits.filterNot { it.isExpired || it.quantity == 0 } as MutableList<StockUnit>
     }
 
     fun isPreferredQuantityAvailable(preferredQuantity: Int): Boolean{
@@ -52,7 +39,7 @@ open class Product(val productName: String, val basePrice: Double, open val sale
 
     fun takeItems(preferredQuantity: Int): Int{
         var remainingQuantity = preferredQuantity
-        stockUnits = ArrayList(stockUnits.sortedWith(compareBy {it.daysBeforeExpiration}))
+        stockUnits.sortBy { it.daysBeforeExpiration }
         for(unit in stockUnits){
             if(unit.quantity > remainingQuantity){
                 unit.quantity -= remainingQuantity

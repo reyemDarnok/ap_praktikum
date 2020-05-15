@@ -2,5 +2,5 @@ class DiscountProduct(productName: String, basePrice: Double, salesPrice: Double
     : Product(productName, basePrice, salesPrice, description) {
 
     override val salesPrice: Double
-        get() = super.salesPrice * (1 - discount.discountFactor)
+        get() = super.salesPrice * discount.discountFactor
 }

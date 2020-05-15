@@ -1,10 +1,10 @@
-class SmartReview(val points: Int): Review {
+class SmartReview(private val points: Int) : Review {
     override fun stars(): Int {
         return points
     }
 
     override fun info(): String {
-        return when(stars()){
+        return when (stars()) {
             0 -> "Schlechtes Produkt"
             1 -> "Mäßiges Produkt"
             2 -> "Durchschnittliches Produkt"

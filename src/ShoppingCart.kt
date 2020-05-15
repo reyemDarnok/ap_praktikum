@@ -2,23 +2,11 @@ class ShoppingCart {
     val productAndQuantityList: ArrayList<Pair<Product, Int>> = ArrayList()
 
     val allProductsAvailable: Boolean
-        get() {
-            for ((product, quantity) in productAndQuantityList) {
-                if (!product.isPreferredQuantityAvailable(quantity)) {
-                    return false
-                }
-            }
-            return true
-        }
+        get() = !productAndQuantityList.any { !it.first.isPreferredQuantityAvailable(it.second) }
+
 
     val totalPrice: Double
-        get() {
-            var price = 0.0
-            for ((product, quantity) in productAndQuantityList) {
-                price += product.salesPrice * quantity
-            }
-            return price
-        }
+        get() = productAndQuantityList.sumByDouble { it.first.salesPrice * it.second }
 
     val listOfAllProducts: String
         get() {
@@ -37,10 +25,7 @@ class ShoppingCart {
     }
 
     fun buyEverything(): Double {
-        var price = 0.0
-        for ((product, quantity) in productAndQuantityList) {
-            price += product.takeItems(quantity) * product.salesPrice
-        }
+        val price = productAndQuantityList.sumByDouble { it.first.takeItems(it.second) * it.first.salesPrice }
         clear()
         return price
     }

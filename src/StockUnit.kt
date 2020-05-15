@@ -5,18 +5,15 @@ class StockUnit(var quantity: Int,daysBeforeExpiration: Int){
 
 
     var daysBeforeExpiration: Int = daysBeforeExpiration
-        private set
+        set(numOfDays) {
+            if (numOfDays > field) {
+                throw IllegalArgumentException("Time is linear! Number of days before expiration can only ever get smaller")
+            } else {
+                field = numOfDays
+            }
+        }
 
     val isExpiringSoon: Boolean
         get() = daysBeforeExpiration < 5
-
-
-    fun daysPassed(numOfDays: Int){
-        if(numOfDays < 0){
-            throw IllegalArgumentException("Time is linear! Negative values for daysPassed are disallowed")
-        } else {
-            daysBeforeExpiration-=numOfDays
-        }
-    }
 
 }
