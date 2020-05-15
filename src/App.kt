@@ -17,10 +17,9 @@ object App {
             warehouse.fillWarehouse(names[rand].name, Random.nextDouble(0.0, 20.0), names[rand].description)
             names.remove(names[rand])
         }
-        print(warehouse.listOfProducts)
-
         mainloop@ while(true){
-            println("H=Hinzufügen   K=Alles kaufen  I=Info Z=Einkaufs-Liste zeigen  L=Liste leeren  E=Exit" )
+            print(warehouse.listOfProducts)
+            println("H=Hinzufügen   K=Alles kaufen  I=Info Z=Einkaufs-Liste zeigen  L=Liste leeren  E=Exit")
             when(readLine() ?: "No Input"){
                 "E","e" -> {
                     println("Auf wiedersehen")
