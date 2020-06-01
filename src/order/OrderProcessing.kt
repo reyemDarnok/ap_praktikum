@@ -176,17 +176,17 @@ class OrderProcessing : Iterable<Order> {
             first?.order?.shoppingCart?.buyEverything()
             first = first?.next
         }
-        var previous: OrderNode = first!!
+        var previous: OrderNode? = first
         if (first?.next != null) {
-            var current: OrderNode = first!!.next!!
-            while (current.next != null) {
+            var current: OrderNode? = first?.next
+            while (current != null) {
                 if (current.order.address.city == city) {
                     current.order.shoppingCart.buyEverything()
-                    previous.next = current.next
+                    previous?.next = current.next
                 } else {
                     previous = current
                 }
-                current = current.next!!
+                current = current.next
             }
         }
     }
