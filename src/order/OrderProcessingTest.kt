@@ -429,8 +429,8 @@ class OrderProcessingTest {
         }
 
         assertTrue(list.anyProduct { it.salesPrice == 3.0 })
-        assertTrue(list.anyProduct { it.buyPrice == 1.0 })
-        assertFalse(list.anyProduct { it.buyPrice > 100.0 })
+        assertTrue(list.anyProduct { it.basePrice == 1.0 })
+        assertFalse(list.anyProduct { it.basePrice > 100.0 })
         assertFalse(list.anyProduct { it.salesPrice > 100.0 })
     }
 
