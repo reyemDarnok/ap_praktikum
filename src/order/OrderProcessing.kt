@@ -2,7 +2,7 @@ package order
 
 import product.Product
 
-class OrderProcessing {
+class OrderProcessing : Iterable<Order> {
     /*** Basisstruktur für verkettete Liste ***/
     // Erstes Element der verketten Liste
     var first: OrderNode? = null
@@ -12,45 +12,139 @@ class OrderProcessing {
 
     /*** Eigenschaften ***/
     // ist die Liste leer?
-    val isEmpty: Boolean = false // TODO
+    val isEmpty: Boolean = first == null
 
     // Sind die Items absteigend sortiert?
-    fun isSorted(): Boolean = false // TODO
+    fun isSorted(): Boolean {
+        var previous: Order = first?.order ?: return true
+        for (order in this) {
+            if (order > previous) {
+                return false
+            }
+            previous = order
+        }
+        return true
+    }
 
     // Berechnet den Gesamtwert aller Bestellungen
-    val totalVolume: Double = 0.0 // TODO
+    val totalVolume: Double
+        get() {
+            var sum = 0.0
+            for (order in this) {
+                sum += order.shoppingCart.totalPrice
+            }
+            return sum
+        }
 
     // Anzahl der Bestellungen
-    val size: Int = 0 // TODO
+    val size: Int
+        get() {
+            var num = 0
+            for (order in this) {
+                num += 1
+            }
+            return num
+        }
 
     // ** Funktionen zum Einfügen **
 
     // Bestellung hinten anhängen
     fun append(order: Order) {
-        // TODO
+        var last: OrderNode? = first
+        while (last?.next != null) {
+            last = last.next
+        }
+        if (last != null) {
+            last.next = OrderNode(order, null)
+        } else {
+            first = OrderNode(order, null)
+        }
     }
 
     // Sortiert die Bestellung ein. Details siehe Aufgabentext
     fun insertBeforeSmallerVolumes(order: Order) {
-        // TODO
+        if (first == null) {
+            first = OrderNode(order, null)
+        } else {
+            var last: OrderNode = first!!
+            var previous: OrderNode = first!!
+            while (last.order > order) {
+                previous = last
+                if (last.next == null) {
+                    last.next = OrderNode(order, null)
+                    break
+                }
+                last = last.next!!
+            }
+            previous.next = OrderNode(order, last)
+        }
     }
 
     // Sortiert nach Auftragsvolumen
+    /**
+     * Uses Mergesort
+     */
     fun sortyByVolume() {
-        // TODO
+        first = mergesort(first)
+    }
+
+    private fun mergesort(head: OrderNode?): OrderNode? {
+        if (head?.next == null) {
+            return head
+        }
+
+        val middle = getMiddle(head)
+        val nextOfMiddle = middle?.next
+        middle?.next = null
+
+        val left = mergesort(head)
+        val right = mergesort(nextOfMiddle)
+        return sortedMerge(left, right)
+    }
+
+    private fun sortedMerge(left: OrderNode?, right: OrderNode?): OrderNode? {
+        if (left == null || right == null) {
+            return null
+        }
+        return if (left.order <= right.order) {
+            left.next = sortedMerge(left.next, right)
+            left
+        } else {
+            right.next = sortedMerge(left, right.next)
+            right
+        }
+    }
+
+    private fun getMiddle(head: OrderNode?): OrderNode? {
+        if (head == null) {
+            return head
+        }
+        var slow = head
+        var fast = head
+
+        while (fast?.next != null && fast.next?.next != null) {
+            slow = slow?.next
+            fast = fast.next?.next
+        }
+
+        return slow
     }
 
     // Funktionen zum Verarbeiten der Liste
 
     // Verarbeitet die erste Bestellung und entfernt diese aus der Liste
     fun processFirst() {
-        // TODO
+        first?.order?.shoppingCart?.buyEverything()
+        first = first?.next
     }
 
     // Vearbeitet die Bestellung mit dem höchsten Auftragsvolumen
     // und entfernt diese aus der Liste
     fun processHighest() {
-        // TODO
+        var beforeHighest: OrderNode? = first
+        var previous: OrderNode? = first
+        var current: OrderNode? = first
+
     }
 
     // Verarbeitet alle Aufträge für die Stadt in einem Rutsch
@@ -76,4 +170,11 @@ class OrderProcessing {
     // Erzeugt ein neues order.OrderProcessing Objekt, in dem nur noch
     // order.Order enthalten, für die die predicate Funktion true liefert
     fun filter(predicate: (Order) -> Boolean): OrderProcessing = this // TODO
+
+    /**
+     * Returns an iterator over the elements of this object.
+     */
+    override fun iterator(): Iterator<Order> {
+        TODO("Not yet implemented")
+    }
 }
