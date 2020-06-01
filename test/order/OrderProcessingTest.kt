@@ -248,7 +248,7 @@ class OrderProcessingTest {
         )
 
         assertEquals(before, list.first)
-        list.sortyByVolume()
+        list.sortByVolume()
         assertEquals(after, list.first)
     }
 

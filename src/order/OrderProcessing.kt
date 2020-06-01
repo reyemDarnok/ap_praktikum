@@ -85,7 +85,7 @@ class OrderProcessing : Iterable<Order> {
     /**
      * Uses Mergesort
      */
-    fun sortyByVolume() {
+    fun sortByVolume() {
         first = mergesort(first)
     }
 
