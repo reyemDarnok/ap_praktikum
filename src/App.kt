@@ -1,3 +1,4 @@
+import groups.InsufficientProductsException
 import groups.ShoppingCart
 import groups.Warehouse
 import product.ProductNames
@@ -91,43 +92,23 @@ object App {
         val quantity: Int
         try {
             quantity = quantityString.toInt()
-        } catch (e: NumberFormatException){
+        } catch (e: NumberFormatException) {
             println("$quantityString ist keine ganze Zahl")
             return
         }
-        if(quantity <= 0){
+        if (quantity <= 0) {
             println("Die Menge muss positiv sein")
         }
-        val index = getIndexByProductName(productName)
-        if(index != -1){
-            val newQuantity = shoppingCart.productAndQuantityList[index].second + quantity
-            if(product.isPreferredQuantityAvailable(newQuantity)) {
-                shoppingCart.productAndQuantityList[index] = Pair(product, newQuantity)
-
-                if (quantity != 1) {
-                    println("$quantity $productName wurden der Einkaufsliste hinzugefügt")
-                } else {
-                    println("1 $productName wurde der Einkaufsliste hinzugefügt")
-                }
+        try {
+            shoppingCart.addProduct(product, quantity)
+            if (quantity != 1) {
+                println("$quantity $productName wurden der Einkaufsliste hinzugefügt")
             } else {
-                println("Es sind leider nur noch ${product.availableItems} auf Lager")
+                println("1 $productName wurde der Einkaufsliste hinzugefügt")
             }
-        } else {
-            if(product.isPreferredQuantityAvailable(quantity)) {
-                shoppingCart.productAndQuantityList.add(Pair(product, quantity))
-                if (quantity != 1) {
-                    println("$quantity $productName wurden der Einkaufsliste hinzugefügt")
-                } else {
-                    println("1 $productName wurde der Einkaufsliste hinzugefügt")
-                }
-            } else {
-                println("Es sind leider nur noch ${product.availableItems} auf Lager")
-            }
+        } catch (e: InsufficientProductsException) {
+            println("Es sind leider nur noch ${e.availableItems} auf Lager")
         }
-    }
-
-    private fun getIndexByProductName(productName: String): Int{
-        return shoppingCart.productAndQuantityList.indexOfFirst { it.first.productName == productName }
     }
 
 }
