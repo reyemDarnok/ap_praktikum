@@ -141,21 +141,61 @@ class OrderProcessing : Iterable<Order> {
     // Vearbeitet die Bestellung mit dem höchsten Auftragsvolumen
     // und entfernt diese aus der Liste
     fun processHighest() {
-        var beforeHighest: OrderNode? = first
-        var previous: OrderNode? = first
-        var current: OrderNode? = first
+        if (isEmpty) {
+            return
+        }
+        var beforeHighest: OrderNode? = null
+        var highest: OrderNode = first!!
+        var previous: OrderNode
+        var current: OrderNode = first!!
+        while (current.next != null) {
+            previous = current
+            current = current.next!!
+            if (highest.order < current.order) {
+                beforeHighest = previous
+                highest = current
+            }
+        }
+        highest.order.shoppingCart.buyEverything()
+        if (beforeHighest != null) {
+            beforeHighest.next = highest.next
+        } else {
+            first = highest.next
+        }
 
     }
 
     // Verarbeitet alle Aufträge für die Stadt in einem Rutsch
     // und entfernt diese aus der Lite
     fun processAllFor(city: String) {
-        // TODO
+        if (isEmpty) {
+            return
+        }
+        while (first?.order?.address?.city == city) {
+            first?.order?.shoppingCart?.buyEverything()
+            first = first?.next
+        }
+        var previous: OrderNode = first!!
+        if (first?.next != null) {
+            var current: OrderNode = first!!.next!!
+            while (current.next != null) {
+                if (current.order.address.city == city) {
+                    current.order.shoppingCart.buyEverything()
+                    previous.next = current.next
+                } else {
+                    previous = current
+                }
+                current = current.next!!
+            }
+        }
     }
 
     // Verarbeite alle Bestellungen. Die Liste ist danach leer.
     fun processAll() {
-        // TODO
+        for (order in this) {
+            order.shoppingCart.buyEverything()
+        }
+        first = null
     }
 
     // ** Funktionen zum Analysieren**
