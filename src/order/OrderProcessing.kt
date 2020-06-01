@@ -201,20 +201,63 @@ class OrderProcessing : Iterable<Order> {
     // ** Funktionen zum Analysieren**
 
     // Analysiert alle order mit der analyzer Funktion
-    fun analyzeAll(analyzer: (Order) -> String): String = "" // TODO
+    fun analyzeAll(analyzer: (Order) -> String): String {
+        val out = StringBuilder()
+        for (order in this) {
+            out.append(analyzer.invoke(order))
+        }
+        return out.toString()
+    }
 
     // Prüft, ob für ein Produkt einer der Bestellungen
     // die predicate Funktion erfüllt wird
-    fun anyProduct(predicate: (Product) -> Boolean): Boolean = false // TODO
+    fun anyProduct(predicate: (Product) -> Boolean): Boolean {
+        for (order in this) {
+            for (pair in order.shoppingCart.productAndQuantityList) {
+                if (predicate.invoke(pair.first)) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
 
     // Erzeugt ein neues order.OrderProcessing Objekt, in dem nur noch
     // order.Order enthalten, für die die predicate Funktion true liefert
-    fun filter(predicate: (Order) -> Boolean): OrderProcessing = this // TODO
+    fun filter(predicate: (Order) -> Boolean): OrderProcessing {
+        val out = OrderProcessing()
+        for (order in this) {
+            if (predicate.invoke(order)) {
+                out.append(order)
+            }
+        }
+        return out
+    }
 
     /**
      * Returns an iterator over the elements of this object.
      */
     override fun iterator(): Iterator<Order> {
-        TODO("Not yet implemented")
+        return OrderProcessingIterator(this)
+    }
+
+    class OrderProcessingIterator(orderProcessing: OrderProcessing) : Iterator<Order> {
+        var current = orderProcessing.first
+
+        /**
+         * Returns `true` if the iteration has more elements.
+         */
+        override fun hasNext(): Boolean {
+            return current != null
+        }
+
+        /**
+         * Returns the next element in the iteration.
+         */
+        override fun next(): Order {
+            val out = current ?: throw NoSuchElementException()
+            current = current!!.next
+            return out.order
+        }
     }
 }
