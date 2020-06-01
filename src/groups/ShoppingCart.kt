@@ -28,6 +28,10 @@ class ShoppingCart {
         productAndQuantityList.clear()
     }
 
+    fun addProduct(product: Product, quantity: Int) {
+        productAndQuantityList.add(Pair(product, quantity))
+    }
+
     fun buyEverything(): Double {
         val price = productAndQuantityList.sumByDouble { it.first.takeItems(it.second) * it.first.salesPrice }
         clear()

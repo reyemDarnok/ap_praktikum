@@ -12,5 +12,6 @@ enum class ProductNames(val description: String) {
     Kuchen("Ungelogen"),
     Ananas("Noch sinnfreier als die goldene Variante"),
     Gurke("AUSSCHLIEẞLICH ZUM VERZEHR BEABSICHTIGT"),
-    Zwiebeln("Auch vefügbar als Ninja-Variante")
+    Zwiebeln("Auch vefügbar als Ninja-Variante"),
+    Salz("Frisch aus League of Legends")
 }

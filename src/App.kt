@@ -12,13 +12,13 @@ object App {
     fun main(args: Array<String>) {
 
         val names = mutableListOf(*ProductNames.values())
-        for (i in 0..10) {
+        for (i in 0 until 10) {
             val rand = Random.nextInt(names.size)
             warehouse.fillWarehouse(names[rand].name, Random.nextDouble(0.0, 20.0), names[rand].description)
             names.remove(names[rand])
         }
         mainloop@ while(true){
-            print(warehouse.listOfProducts)
+            println(warehouse.listOfProducts)
             println("H=Hinzufügen   K=Alles kaufen  I=Info Z=Einkaufs-Liste zeigen  L=Liste leeren  E=Exit")
             when(readLine() ?: "No Input"){
                 "E","e" -> {
