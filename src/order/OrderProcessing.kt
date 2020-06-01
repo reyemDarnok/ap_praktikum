@@ -67,17 +67,17 @@ class OrderProcessing : Iterable<Order> {
         if (first == null) {
             first = OrderNode(order, null)
         } else {
-            var last: OrderNode = first!!
-            var previous: OrderNode = first!!
-            while (last.order > order) {
+            var last: OrderNode? = first
+            var previous: OrderNode? = null
+            while (last != null && last.order > order) {
                 previous = last
-                if (last.next == null) {
-                    last.next = OrderNode(order, null)
-                    break
-                }
-                last = last.next!!
+                last = last.next
             }
-            previous.next = OrderNode(order, last)
+            if (previous != null) {
+                previous.next = OrderNode(order, last)
+            } else {
+                first = OrderNode(order, last)
+            }
         }
     }
 
