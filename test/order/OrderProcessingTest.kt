@@ -4,7 +4,7 @@ import groups.ShoppingCart
 import order.OrderProcessing.OrderNode
 import org.junit.Assert.*
 import org.junit.Test
-import product.Product
+import product.InfiniteProduct
 
 class OrderProcessingTest {
 
@@ -13,16 +13,16 @@ class OrderProcessingTest {
 
     private fun shoppingCarts(): Triple<ShoppingCart, ShoppingCart, ShoppingCart> {
         val cart = ShoppingCart().apply {
-            addProduct(Product("", 1.0, 2.0, ""), 5) // 10
-            addProduct(Product("", 2.0, 2.5, ""), 5) // 12.5 => 22.5
+            addProduct(InfiniteProduct("", 1.0, 2.0, ""), 5) // 10
+            addProduct(InfiniteProduct("", 2.0, 2.5, ""), 5) // 12.5 => 22.5
         }
 
         val cart2 = ShoppingCart().apply {
-            addProduct(Product("", 1.0, 3.0, ""), 5) // 15
+            addProduct(InfiniteProduct("", 1.0, 3.0, ""), 5) // 15
         }
 
         val cart3 = ShoppingCart().apply {
-            addProduct(Product("", 1.0, 3.5, ""), 5) // 17.5
+            addProduct(InfiniteProduct("", 1.0, 3.5, ""), 5) // 17.5
         }
 
         return Triple(cart, cart2, cart3)
@@ -55,12 +55,12 @@ class OrderProcessingTest {
         val list = OrderProcessing()
 
         val cart = ShoppingCart().apply {
-            addProduct(Product("", 1.0, 2.0, ""), 5) // 10
-            addProduct(Product("", 2.0, 2.5, ""), 5) // 12.5
+            addProduct(InfiniteProduct("", 1.0, 2.0, ""), 5) // 10
+            addProduct(InfiniteProduct("", 2.0, 2.5, ""), 5) // 12.5
         }
 
         val cart2 = ShoppingCart().apply {
-            addProduct(Product("", 1.0, 3.0, ""), 5) // 15
+            addProduct(InfiniteProduct("", 1.0, 3.0, ""), 5) // 15
         }
 
         list.first = OrderNode(
@@ -79,12 +79,12 @@ class OrderProcessingTest {
         val list = OrderProcessing()
 
         val cart = ShoppingCart().apply {
-            addProduct(Product("", 1.0, 2.0, ""), 5) // 10
-            addProduct(Product("", 2.0, 2.5, ""), 5) // 12.5
+            addProduct(InfiniteProduct("", 1.0, 2.0, ""), 5) // 10
+            addProduct(InfiniteProduct("", 2.0, 2.5, ""), 5) // 12.5
         }
 
         val cart2 = ShoppingCart().apply {
-            addProduct(Product("", 1.0, 3.0, ""), 5) // 15
+            addProduct(InfiniteProduct("", 1.0, 3.0, ""), 5) // 15
         }
 
         list.first = OrderNode(
@@ -103,12 +103,12 @@ class OrderProcessingTest {
         val list = OrderProcessing()
 
         val cart = ShoppingCart().apply {
-            addProduct(Product("", 1.0, 2.0, ""), 5) // 10
-            addProduct(Product("", 2.0, 2.5, ""), 5) // 12.5
+            addProduct(InfiniteProduct("", 1.0, 2.0, ""), 5) // 10
+            addProduct(InfiniteProduct("", 2.0, 2.5, ""), 5) // 12.5
         }
 
         val cart2 = ShoppingCart().apply {
-            addProduct(Product("", 1.0, 3.0, ""), 5) // 15
+            addProduct(InfiniteProduct("", 1.0, 3.0, ""), 5) // 15
         }
 
         list.first = OrderNode(

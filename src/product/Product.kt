@@ -55,7 +55,7 @@ open class Product(val productName: String, val basePrice: Double, open val sale
     val salesValueOfAllItems: Double
         get() = availableItems * salesPrice
 
-    val availableItems: Int
+    open val availableItems: Int
         get() = stockUnits.sumBy { it.quantity }
 
 
@@ -100,11 +100,11 @@ open class Product(val productName: String, val basePrice: Double, open val sale
         return availableItems >= preferredQuantity
     }
 
-    fun takeItems(preferredQuantity: Int): Int{
+    open fun takeItems(preferredQuantity: Int): Int {
         var remainingQuantity = preferredQuantity
         stockUnits.sortBy { it.daysBeforeExpiration }
-        for(unit in stockUnits){
-            if(unit.quantity > remainingQuantity){
+        for (unit in stockUnits) {
+            if (unit.quantity > remainingQuantity) {
                 unit.quantity -= remainingQuantity
                 return preferredQuantity
             } else {

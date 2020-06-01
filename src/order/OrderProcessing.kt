@@ -12,7 +12,8 @@ class OrderProcessing : Iterable<Order> {
 
     /*** Eigenschaften ***/
     // ist die Liste leer?
-    val isEmpty: Boolean = first == null
+    val isEmpty: Boolean
+        get() = first == null
 
     // Sind die Items absteigend sortiert?
     fun isSorted(): Boolean {
@@ -260,4 +261,4 @@ class OrderProcessing : Iterable<Order> {
             return out.order
         }
     }
-}
+    }
