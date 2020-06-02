@@ -27,4 +27,10 @@ class LimitedReviewTest {
         val review = LimitedReview(10.0, "")
         assertEquals(5, review.stars())
     }
+
+    @Test
+    fun `echo comment`() {
+        val review = LimitedReview(2.0, "some comment")
+        assertEquals("some comment", review.info())
+    }
 }
