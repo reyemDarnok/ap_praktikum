@@ -17,13 +17,13 @@ class Warehouse {
     private val products: MutableList<Product> = mutableListOf()
 
     /**
-     * A String containing each [Product] on its own line, as reported by [Product.toString]
+     * A String containing each [Product] on its own line, as reported by [Product.showNice]
      */
     val listOfProducts: String
         get() {
             val description = StringBuilder()
             for (product in products) {
-                description.append(product.toString()).append('\n')
+                description.append(product.showNice()).append('\n')
             }
             return description.toString()
         }

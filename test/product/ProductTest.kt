@@ -60,11 +60,16 @@ class ProductTest {
     }
 
     @Test
-    fun `toString formats properly`() {
+    fun `showNice formats properly`() {
         Product.longestName = 10
         Product.longestPrice = 10
         Product.longestAmount = 5
-        assertEquals("      name\t     10.00€ \tx\t0", product.toString())
+        assertEquals("      name\t     10.00€ \tx\t0", product.showNice())
+    }
+
+    @Test
+    fun `toString formats properly`() {
+        assertEquals("name 10.00 Euro. desc", product.toString())
     }
 
     @Test

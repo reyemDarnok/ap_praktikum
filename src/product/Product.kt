@@ -10,6 +10,7 @@ import kotlin.math.log10
  * @property salesPrice The price this product will sell for
  * @property description A description of this product.
  */
+@Suppress("LeakingThis")
 open class Product(val productName: String, val basePrice: Double, open val salesPrice: Double, val description: String) {
     /**
      * Tracks the longest names, prices and amounts to align the output nicely without iterating through all products
@@ -81,7 +82,7 @@ open class Product(val productName: String, val basePrice: Double, open val sale
     var stockUnits: MutableList<StockUnit> = mutableListOf()
 
     init {
-        // this leakage is fine, testAll does not cause it to persist and only checks already initialised attributes
+        // this leakage is accounted for
         testAll(this)
     }
 
@@ -118,7 +119,7 @@ open class Product(val productName: String, val basePrice: Double, open val sale
      * <[productName]> <[salesPrice]> x <[availableItems]>
      * padded to align with the other products
      */
-    override fun toString(): String {
+    fun showNice(): String {
         val nameLength: Int = productName.length
         val priceLength = log10(salesPrice).toInt() + 4
         val amountLength = log10(availableItems.toDouble()).toInt() + 1
@@ -136,6 +137,10 @@ open class Product(val productName: String, val basePrice: Double, open val sale
         }
         string.append(availableItems)
         return string.toString()
+    }
+
+    override fun toString(): String {
+        return "%s %.2f Euro. %s".format(productName, salesPrice, description)
     }
 
     /**
