@@ -2,6 +2,8 @@ package product
 
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class StockUnitTest {
     @Test
@@ -15,5 +17,17 @@ class StockUnitTest {
     fun `increase DaysBeforeExpiration`() {
         val su = StockUnit(5, 3)
         su.daysBeforeExpiration = 10
+    }
+
+    @Test
+    fun `is not expiring soon`() {
+        val su = StockUnit(5, 10)
+        assertFalse(su.isExpiringSoon)
+    }
+
+    @Test
+    fun `is expiring soon`() {
+        val su = StockUnit(5, 2)
+        assertTrue(su.isExpiringSoon)
     }
 }
