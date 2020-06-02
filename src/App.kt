@@ -1,8 +1,10 @@
 import groups.InsufficientProductsException
 import groups.ShoppingCart
 import groups.Warehouse
+import product.Product
 import product.ProductNames
 import review.Review
+import kotlin.math.log10
 import kotlin.random.Random
 
 /**
@@ -35,7 +37,7 @@ object App {
 
         //UI mainloop
         mainloop@ while (true) {
-            println(warehouse.listOfProducts)
+            warehouse.forEach { showNice(it) }
             println("H=Hinzufügen   K=Alles kaufen  I=Info Z=Einkaufs-Liste zeigen  L=Liste leeren  E=Exit")
             when (readLine() ?: "No Input") {
                 "E", "e" -> {
@@ -142,6 +144,32 @@ object App {
         } catch (e: InsufficientProductsException) {
             println("Es sind leider nur noch ${e.availableItems} auf Lager")
         }
+    }
+
+    /**
+     * Prints
+     * <productName> <salesPrice> x <availableItems>
+     *  of [product] padded to align with the other products
+     *  @param product The product to show
+     */
+    private fun showNice(product: Product) {
+        val nameLength: Int = product.productName.length
+        val priceLength = log10(product.salesPrice).toInt() + 4
+        val amountLength = log10(product.availableItems.toDouble()).toInt() + 1
+        val string = StringBuilder()
+        for (i in 0 until (Product.longestName - nameLength)) {
+            string.append(' ')
+        }
+        string.append(product.productName).append('\t')
+        for (i in 0 until (Product.longestPrice - priceLength)) {
+            string.append(' ')
+        }
+        string.append("%.2f€ ".format(product.salesPrice)).append("\tx\t")
+        for (i in 0 until (Product.longestAmount - amountLength)) {
+            string.append(' ')
+        }
+        string.append(product.availableItems)
+        println(string)
     }
 
 }

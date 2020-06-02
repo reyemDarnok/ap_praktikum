@@ -10,20 +10,20 @@ import kotlin.random.Random
 /**
  * A representation of a warehouse that stores [Product]
  */
-class Warehouse {
+class Warehouse : Iterable<Product> {
     /**
      * A List of the products in the warehouse
      */
     private val products: MutableList<Product> = mutableListOf()
 
     /**
-     * A String containing each [Product] on its own line, as reported by [Product.showNice]
+     * A String containing each [Product] on its own line, as reported by [Product.toString]
      */
     val listOfProducts: String
         get() {
             val description = StringBuilder()
             for (product in products) {
-                description.append(product.showNice()).append('\n')
+                description.append(product.toString()).append('\n')
             }
             return description.toString()
         }
@@ -78,5 +78,12 @@ class Warehouse {
         product.addReview(LimitedReview(Random.nextDouble(), String(Random.nextBytes(Random.nextInt(0, 255)))))
         product.addReview(SmartReview(Random.nextInt(0, 5)))
         products.add(product)
+    }
+
+    /**
+     * Returns an iterator over the elements of this object.
+     */
+    override fun iterator(): Iterator<Product> {
+        return products.iterator()
     }
 }

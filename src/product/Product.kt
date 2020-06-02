@@ -103,32 +103,6 @@ open class Product protected constructor(val productName: String, val basePrice:
     open val availableItems: Int
         get() = stockUnits.sumBy { it.quantity }
 
-
-    /**
-     * Prints
-     * <[productName]> <[salesPrice]> x <[availableItems]>
-     * padded to align with the other products
-     */
-    fun showNice(): String {
-        val nameLength: Int = productName.length
-        val priceLength = log10(salesPrice).toInt() + 4
-        val amountLength = log10(availableItems.toDouble()).toInt() + 1
-        val string = StringBuilder()
-        for (i in 0 until (longestName - nameLength)) {
-            string.append(' ')
-        }
-        string.append(productName).append('\t')
-        for (i in 0 until (longestPrice - priceLength)) {
-            string.append(' ')
-        }
-        string.append("%.2f€ ".format(salesPrice)).append("\tx\t")
-        for (i in 0 until (longestAmount - amountLength)) {
-            string.append(' ')
-        }
-        string.append(availableItems)
-        return string.toString()
-    }
-
     override fun toString(): String {
         return "%s %.2f Euro. %s".format(productName, salesPrice, description)
     }

@@ -18,7 +18,7 @@ class ProductTest {
     }
 
     @Test
-    fun Maxima() {
+    fun factory() {
         assertEquals(5, Product.longestPrice)
         assertEquals(4, Product.longestName)
         assertEquals(0, Product.longestAmount)
@@ -57,14 +57,6 @@ class ProductTest {
     @Test
     fun `no stock availableItems works`() {
         assertEquals(0, product.availableItems)
-    }
-
-    @Test
-    fun `showNice formats properly`() {
-        Product.longestName = 10
-        Product.longestPrice = 10
-        Product.longestAmount = 5
-        assertEquals("      name\t     10.00€ \tx\t0", product.showNice())
     }
 
     @Test
