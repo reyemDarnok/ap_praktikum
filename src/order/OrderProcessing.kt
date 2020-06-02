@@ -134,7 +134,13 @@ class OrderProcessing : MutableIterable<Order> {
 
         val left = mergesort(head)
         val right = mergesort(nextOfMiddle)
-        return sortedMerge(left, right)
+        return left?.let {
+            if (right != null) {
+                sortedMerge(it, right)
+            } else {
+                null
+            }
+        } ?: right
     }
 
     /**
@@ -143,18 +149,12 @@ class OrderProcessing : MutableIterable<Order> {
      * @param right The second list
      * @return The head of the new merged list
      */
-    private fun sortedMerge(left: OrderNode?, right: OrderNode?): OrderNode? {
-        if (left == null) {
-            return right
-        }
-        if (right == null) {
-            return left
-        }
+    private fun sortedMerge(left: OrderNode, right: OrderNode): OrderNode? {
         return if (left.order >= right.order) {
-            left.next = sortedMerge(left.next, right)
+            left.next = left.next?.let { sortedMerge(it, right) } ?: right
             left
         } else {
-            right.next = sortedMerge(left, right.next)
+            right.next = right.next?.let { sortedMerge(left, it) } ?: left
             right
         }
     }
@@ -164,15 +164,12 @@ class OrderProcessing : MutableIterable<Order> {
      * @param head The head of the list
      * @return The middle of the list, rounded down
      */
-    private fun getMiddle(head: OrderNode?): OrderNode? {
-        if (head == null) {
-            return head
-        }
+    private fun getMiddle(head: OrderNode): OrderNode? {
         var slow = head
         var fast = head
 
-        while (fast?.next != null && fast.next?.next != null) {
-            slow = slow?.next
+        while (fast.next != null && fast.next?.next != null) {
+            slow = slow.next
             fast = fast.next?.next
         }
 
@@ -184,15 +181,16 @@ class OrderProcessing : MutableIterable<Order> {
      */
 
     /**
-     * Processes the first element of the list
+     * Processes the first element of the list (call buyEverything() and remove the node)
      */
     fun processFirst() {
         first?.order?.shoppingCart?.buyEverything()
         first = first?.next
     }
 
-    // Vearbeitet die Bestellung mit dem höchsten Auftragsvolumen
-    // und entfernt diese aus der Liste
+    /**
+     * Process the highest Element of the list (call buyEvertything() and remove the node)
+     */
     fun processHighest() {
         if (isEmpty) {
             return
@@ -218,8 +216,10 @@ class OrderProcessing : MutableIterable<Order> {
 
     }
 
-    // Verarbeitet alle Aufträge für die Stadt in einem Rutsch
-    // und entfernt diese aus der Lite
+    /**
+     * Processes all orders headed to a specific city
+     * @param city The name of the city for which the orders should be processed
+     */
     fun processAllFor(city: String) {
         if (isEmpty) {
             return
@@ -243,7 +243,9 @@ class OrderProcessing : MutableIterable<Order> {
         }
     }
 
-    // Verarbeite alle Bestellungen. Die Liste ist danach leer.
+    /**
+     * Process all elements in the list. The list will be empty afterwards
+     */
     fun processAll() {
         for (order in this) {
             order.shoppingCart.buyEverything()
@@ -251,9 +253,15 @@ class OrderProcessing : MutableIterable<Order> {
         first = null
     }
 
-    // ** Funktionen zum Analysieren**
+    /**
+     * Functions to analyze the list
+     */
 
-    // Analysiert alle order mit der analyzer Funktion
+    /**
+     * Adds the results of [analyzer] for every element in this list together
+     * @param analyzer Function to be called on every element in this list
+     * @return The concatenated results of [analyzer]. There is no separator between results
+     */
     fun analyzeAll(analyzer: (Order) -> String): String {
         val out = StringBuilder()
         for (order in this) {
@@ -262,8 +270,11 @@ class OrderProcessing : MutableIterable<Order> {
         return out.toString()
     }
 
-    // Prüft, ob für ein Produkt einer der Bestellungen
-    // die predicate Funktion erfüllt wird
+    /**
+     * Checks whether the given function is true for any element of the list
+     * @param predicate The function to check with
+     * @return true, if [predicate] returns true for any element of the list, false otherwise
+     */
     fun anyProduct(predicate: (Product) -> Boolean): Boolean {
         for (order in this) {
             for (pair in order.shoppingCart.productAndQuantityList) {
@@ -295,9 +306,9 @@ class OrderProcessing : MutableIterable<Order> {
     }
 
     class OrderProcessingIterator(private val parent: OrderProcessing) : MutableIterator<Order> {
-        var beforeReturned: OrderNode? = null
-        var lastReturned: OrderNode? = null
-        var current = parent.first
+        private var beforeReturned: OrderNode? = null
+        private var lastReturned: OrderNode? = null
+        private var current = parent.first
 
         /**
          * Returns `true` if the iteration has more elements.
@@ -311,7 +322,9 @@ class OrderProcessing : MutableIterable<Order> {
          */
         override fun next(): Order {
             val out = current ?: throw NoSuchElementException()
-            beforeReturned = lastReturned
+            if (lastReturned != null) {
+                beforeReturned = lastReturned
+            }
             lastReturned = current
             current = current!!.next
             return out.order
@@ -322,14 +335,15 @@ class OrderProcessing : MutableIterable<Order> {
          * @throws IllegalStateException if no element has been requested beforehand
          */
         override fun remove() {
-            if (beforeReturned != null) {
-                beforeReturned!!.next = current
-            } else {
-                if (lastReturned != null) {
-                    parent.first = current
+            if (lastReturned != null) {
+                if (beforeReturned != null) {
+                    beforeReturned!!.next = current
                 } else {
-                    throw IllegalStateException("Can't remove the latest element before any have been requested")
+                    parent.first = current
                 }
+                lastReturned = null
+            } else {
+                throw IllegalStateException("Can't remove the latest element before any have been requested")
             }
         }
     }
