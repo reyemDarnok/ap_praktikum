@@ -16,10 +16,15 @@ class WarehouseTest {
     }
 
     @Test
+    fun `iterator relay`() {
+        warehouse.iterator()
+        // no exceptions
+    }
+
+    @Test
     fun `listOfProducts is accurate`() {
-        assertTrue(warehouse.listOfProducts.contains("1	1.50€ 	x	"))
-        assertTrue(warehouse.listOfProducts.contains("2	3.00€ 	x	"))
-        assertTrue(warehouse.listOfProducts.contains("3	4.50€ 	x	"))
+        assertEquals("1 1.50 Euro. desc1\n2 3.00 Euro. desc2\n3 4.50 Euro. desc3\n", warehouse.listOfProducts)
+
     }
 
     @Test

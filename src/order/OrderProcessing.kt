@@ -343,4 +343,117 @@ class OrderProcessing : MutableIterable<Order> {
             }
         }
     }
+
+    /**
+     * Checks if the specified element is contained in this collection.
+     */
+    fun contains(element: Order): Boolean {
+        for (order in this) {
+            if (order == element) {
+                return true
+            }
+        }
+        return false
+    }
+
+    /**
+     * Checks if all elements in the specified collection are contained in this collection.
+     */
+    fun containsAll(elements: Collection<Order>): Boolean {
+        val found = BooleanArray(elements.size) { false }
+        for (order in this) {
+            for (index in found.indices) {
+                if (!found[index]) {
+                    if (order == elements.elementAt(index)) {
+                        found[index] = true
+                    }
+                }
+            }
+        }
+        return found.all { it }
+    }
+
+    /**
+     * Adds the specified element to the collection.
+     *
+     * @return `true` if the element has been added, `false` if the collection does not support duplicates
+     * and the element is already contained in the collection.
+     */
+    fun add(element: Order): Boolean {
+        append(element)
+        return true
+    }
+
+    /**
+     * Adds all of the elements of the specified collection to this collection.
+     *
+     * @return `true` if any of the specified elements was added to the collection, `false` if the collection was not modified.
+     */
+    fun addAll(elements: Collection<Order>): Boolean {
+        for (order in elements) {
+            append(order)
+        }
+        return true
+    }
+
+    /**
+     * Removes all elements from this collection.
+     */
+    fun clear() {
+        first = null
+    }
+
+    /**
+     * Removes a single instance of the specified element from this
+     * collection, if it is present.
+     *
+     * @return `true` if the element has been successfully removed; `false` if it was not present in the collection.
+     */
+    fun remove(element: Order): Boolean {
+        val iterator = iterator()
+        while (iterator.hasNext()) {
+            val current = iterator.next()
+            if (current == element) {
+                iterator.remove()
+                return true
+            }
+        }
+        return false
+    }
+
+    /**
+     * Removes all of this collection's elements that are also contained in the specified collection.
+     *
+     * @return `true` if any of the specified elements was removed from the collection, `false` if the collection was not modified.
+     */
+    fun removeAll(elements: Collection<Order>): Boolean {
+        var modified = false
+        val iterator = iterator()
+        while (iterator.hasNext()) {
+            val current = iterator.next()
+            if (elements.contains(current)) {
+                iterator.remove()
+                modified = true
+            }
+        }
+        return modified
+    }
+
+    /**
+     * Retains only the elements in this collection that are contained in the specified collection.
+     *
+     * @return `true` if any element was removed from the collection, `false` if the collection was not modified.
+     */
+    fun retainAll(elements: Collection<Order>): Boolean {
+        var modified = false
+        val iterator = iterator()
+        while (iterator.hasNext()) {
+            val current = iterator.next()
+            if (!elements.contains(current)) {
+                iterator.remove()
+                modified = true
+            }
+        }
+        return modified
+    }
 }
