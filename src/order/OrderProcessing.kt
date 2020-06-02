@@ -130,14 +130,13 @@ class OrderProcessing : MutableIterable<Order> {
         }
 
         val middle = getMiddle(head)
-        val nextOfMiddle = middle?.next
-        middle?.next = null
+        val nextOfMiddle = middle.next
+        middle.next = null
 
-        val left = mergesort(head)
+        //mergesort is only null if head is, and head can't be null due to the check at the start
+        val left = mergesort(head)!!
         val right = mergesort(nextOfMiddle)
-        return left?.let { left ->
-            right?.let { sortedMerge(left, right) }
-        } ?: right
+        return right?.let { sortedMerge(left, it) } ?: left
     }
 
     /**
@@ -146,7 +145,7 @@ class OrderProcessing : MutableIterable<Order> {
      * @param right The second list
      * @return The head of the new merged list
      */
-    private fun sortedMerge(left: OrderNode, right: OrderNode): OrderNode? {
+    private fun sortedMerge(left: OrderNode, right: OrderNode): OrderNode {
         return if (left.order >= right.order) {
             left.next = left.next?.let { sortedMerge(it, right) } ?: right
             left
@@ -161,7 +160,7 @@ class OrderProcessing : MutableIterable<Order> {
      * @param head The head of the list
      * @return The middle of the list, rounded down
      */
-    private fun getMiddle(head: OrderNode): OrderNode? {
+    private fun getMiddle(head: OrderNode): OrderNode {
         var slow = head
         var fast = head
 
