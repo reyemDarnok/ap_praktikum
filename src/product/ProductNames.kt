@@ -1,5 +1,9 @@
 package product
 
+/**
+ * Some example Products
+ * @param description The description of the product
+ */
 enum class ProductNames(val description: String) {
     Milch("Ziemlich weiß"),
     Butter("Nur manchmal streichbar"),

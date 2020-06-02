@@ -2,6 +2,11 @@ package order
 
 import groups.ShoppingCart
 
+/**
+ * Represents one order
+ * @property shoppingCart The [ShoppingCart] object describing what was ordered
+ * @property address The [Address] Of the person who ordered this Order
+ */
 data class Order(
         val shoppingCart: ShoppingCart,
         val address: Address
