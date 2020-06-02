@@ -88,7 +88,11 @@ class OrderProcessing : MutableIterable<Order> {
         }
     }
 
-    // Sortiert die Bestellung ein. Details siehe Aufgabentext
+    /**
+     * Inserts the new order where it should be based on its volume.
+     * Note that this does not actually make this list sorted.
+     * @param order The new order
+     */
     fun insertBeforeSmallerVolumes(order: Order) {
         if (first == null) {
             first = OrderNode(order, null)
@@ -107,14 +111,18 @@ class OrderProcessing : MutableIterable<Order> {
         }
     }
 
-    // Sortiert nach Auftragsvolumen
     /**
-     * Uses Mergesort
+     * Sorts the list in O(n log n)
      */
     fun sortByVolume() {
         first = mergesort(first)
     }
 
+    /**
+     * Divides the list in the middle. Calls itself recursively and sorts in
+     * O(n log n)
+     * @param head The start of the list to be sorted
+     */
     private fun mergesort(head: OrderNode?): OrderNode? {
         if (head?.next == null) {
             return head
@@ -129,6 +137,12 @@ class OrderProcessing : MutableIterable<Order> {
         return sortedMerge(left, right)
     }
 
+    /**
+     * Merges two sorted lists. The order of the arguments does not matter
+     * @param left The first list
+     * @param right The second list
+     * @return The head of the new merged list
+     */
     private fun sortedMerge(left: OrderNode?, right: OrderNode?): OrderNode? {
         if (left == null) {
             return right
@@ -145,6 +159,11 @@ class OrderProcessing : MutableIterable<Order> {
         }
     }
 
+    /**
+     * Returns the middle of the given list
+     * @param head The head of the list
+     * @return The middle of the list, rounded down
+     */
     private fun getMiddle(head: OrderNode?): OrderNode? {
         if (head == null) {
             return head
@@ -160,9 +179,13 @@ class OrderProcessing : MutableIterable<Order> {
         return slow
     }
 
-    // Funktionen zum Verarbeiten der Liste
+    /**
+     * Functions to process the list
+     */
 
-    // Verarbeitet die erste Bestellung und entfernt diese aus der Liste
+    /**
+     * Processes the first element of the list
+     */
     fun processFirst() {
         first?.order?.shoppingCart?.buyEverything()
         first = first?.next
