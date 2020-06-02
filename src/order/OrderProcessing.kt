@@ -123,6 +123,7 @@ class OrderProcessing : MutableIterable<Order> {
      * O(n log n)
      * @param head The start of the list to be sorted
      */
+    @Suppress("NAME_SHADOWING")
     private fun mergesort(head: OrderNode?): OrderNode? {
         if (head?.next == null) {
             return head
@@ -134,12 +135,8 @@ class OrderProcessing : MutableIterable<Order> {
 
         val left = mergesort(head)
         val right = mergesort(nextOfMiddle)
-        return left?.let {
-            if (right != null) {
-                sortedMerge(it, right)
-            } else {
-                null
-            }
+        return left?.let { left ->
+            right?.let { sortedMerge(left, right) }
         } ?: right
     }
 
