@@ -17,9 +17,9 @@ class WarehouseTest {
 
     @Test
     fun `listOfProducts is accurate`() {
-        assertTrue(warehouse.listOfProducts.contains("1	 1.50€ 	x	"))
-        assertTrue(warehouse.listOfProducts.contains("2	 3.00€ 	x	"))
-        assertTrue(warehouse.listOfProducts.contains("3	 4.50€ 	x	"))
+        assertTrue(warehouse.listOfProducts.contains("1	1.50€ 	x	"))
+        assertTrue(warehouse.listOfProducts.contains("2	3.00€ 	x	"))
+        assertTrue(warehouse.listOfProducts.contains("3	4.50€ 	x	"))
     }
 
     @Test

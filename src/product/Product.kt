@@ -78,7 +78,7 @@ open class Product(val productName: String, val basePrice: Double, open val sale
      * A list of all [Review]s for this product
      */
     val reviews: MutableList<Review> = mutableListOf()
-    private var stockUnits: MutableList<StockUnit> = mutableListOf()
+    var stockUnits: MutableList<StockUnit> = mutableListOf()
 
     init {
         // this leakage is fine, testAll does not cause it to persist and only checks already initialised attributes
@@ -120,7 +120,7 @@ open class Product(val productName: String, val basePrice: Double, open val sale
      */
     override fun toString(): String {
         val nameLength: Int = productName.length
-        val priceLength = log10(salesPrice).toInt() + 3
+        val priceLength = log10(salesPrice).toInt() + 4
         val amountLength = log10(availableItems.toDouble()).toInt() + 1
         val string = StringBuilder()
         for (i in 0 until (longestName - nameLength)) {
@@ -166,7 +166,7 @@ open class Product(val productName: String, val basePrice: Double, open val sale
      * Filters out any [StockUnit] that either is expired of is empty
      */
     fun cleanStock() {
-        stockUnits = stockUnits.filterNot { it.isExpired || it.quantity == 0 } as MutableList<StockUnit>
+        stockUnits = stockUnits.filterNot { it.isExpired || it.quantity <= 0 } as MutableList<StockUnit>
     }
 
     /**

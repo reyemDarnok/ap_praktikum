@@ -8,10 +8,18 @@ package product
 class DiscountProduct(productName: String, basePrice: Double, salesPrice: Double, description: String, val discount: DiscountType)
     : Product(productName, basePrice, salesPrice, description) {
 
+    private val discountActual: DiscountType? = discount
+
     init {
-        testPriceLength(super.salesPrice * discount.discountFactor)
+        testAll(this)
     }
 
     override val salesPrice: Double
-        get() = super.salesPrice * discount.discountFactor
+        get() {
+            return if (discountActual == null) {
+                0.0
+            } else {
+                super.salesPrice * discountActual.discountFactor
+            }
+        }
 }
