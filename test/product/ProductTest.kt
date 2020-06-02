@@ -7,14 +7,14 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class ProductTest {
-    var product = Product("name", 5.0, 10.0, "desc")
+    var product = Product.create("name", 5.0, 10.0, "desc")
 
     @Before
     fun init() {
         Product.longestAmount = 0
         Product.longestPrice = 0
         Product.longestName = 0
-        product = Product("name", 5.0, 10.0, "desc")
+        product = Product.create("name", 5.0, 10.0, "desc")
     }
 
     @Test

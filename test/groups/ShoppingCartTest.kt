@@ -57,7 +57,7 @@ class ShoppingCartTest {
 
     @Test(expected = InsufficientProductsException::class)
     fun `addProduct checks product amounts`() {
-        cart.addProduct(Product("", 0.2, 0.3, ""), 5)
+        cart.addProduct(Product.create("", 0.2, 0.3, ""), 5)
     }
 
     @Test
@@ -76,7 +76,7 @@ class ShoppingCartTest {
 
     @Test(expected = InsufficientProductsException::class)
     fun `addProduct checks amounts while adding`() {
-        val product = Product("", 0.2, 0.3, "")
+        val product = Product.create("", 0.2, 0.3, "")
         product.addStock(StockUnit(10, 5))
         cart.addProduct(product, 10)
         cart.addProduct(product, 10)

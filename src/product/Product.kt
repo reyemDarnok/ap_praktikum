@@ -10,7 +10,7 @@ import kotlin.math.log10
  * @property salesPrice The price this product will sell for
  * @property description A description of this product.
  */
-open class Product(val productName: String, val basePrice: Double, open val salesPrice: Double, val description: String) {
+open class Product protected constructor(val productName: String, val basePrice: Double, open val salesPrice: Double, val description: String) {
     /**
      * Tracks the longest names, prices and amounts to align the output nicely without iterating through all products
      * every time
@@ -63,14 +63,10 @@ open class Product(val productName: String, val basePrice: Double, open val sale
             }
         }
 
-        /**
-         * Tests all attributes of [product] if they are longer than the current Maxima and updates accordingly
-         * @param product The [Product] to check
-         */
-        fun testAll(product: Product) {
-            testAmountLength(product.availableItems)
-            testNameLength(product.productName)
-            testPriceLength(product.salesPrice)
+        fun create(productName: String, basePrice: Double, salesPrice: Double, description: String): Product {
+            testPriceLength(salesPrice)
+            testNameLength(productName)
+            return Product(productName, basePrice, salesPrice, description)
         }
     }
 
@@ -79,11 +75,6 @@ open class Product(val productName: String, val basePrice: Double, open val sale
      */
     val reviews: MutableList<Review> = mutableListOf()
     var stockUnits: MutableList<StockUnit> = mutableListOf()
-
-    init {
-        //this leakage accounted for
-        testAll(this)
-    }
 
 
     /**
