@@ -49,6 +49,7 @@ object App {
                 "Z", "z" -> showBasket()
                 else -> println("Bitte einen validen Befehl eingeben (EHIKLZ)")
             }
+            println()
         }
     }
 

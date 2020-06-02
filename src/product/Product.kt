@@ -10,13 +10,12 @@ import kotlin.math.log10
  * @property salesPrice The price this product will sell for
  * @property description A description of this product.
  */
-@Suppress("LeakingThis")
 open class Product(val productName: String, val basePrice: Double, open val salesPrice: Double, val description: String) {
     /**
      * Tracks the longest names, prices and amounts to align the output nicely without iterating through all products
      * every time
      */
-    companion object Maxima {
+    companion object Factory {
         /**
          * The length of the longest name of any product
          */
@@ -82,7 +81,7 @@ open class Product(val productName: String, val basePrice: Double, open val sale
     var stockUnits: MutableList<StockUnit> = mutableListOf()
 
     init {
-        // this leakage is accounted for
+        //this leakage accounted for
         testAll(this)
     }
 

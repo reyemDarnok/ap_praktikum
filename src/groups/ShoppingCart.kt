@@ -57,15 +57,16 @@ class ShoppingCart {
      * @throws InsufficientProductsException if there are not enough products available
      */
     fun addProduct(product: Product, quantity: Int) {
-        val index = productAndQuantityList.indexOfFirst { it.first == product }
-        if (index != -1) {
-            val newQuantity = productAndQuantityList[index].second + quantity
-            if (product.isPreferredQuantityAvailable(newQuantity)) {
-                productAndQuantityList[index] = Pair(product, newQuantity)
-            } else {
-                throw InsufficientProductsException(product.availableItems)
-            }
-        } else {
+        productAndQuantityList.find { it.first == product }
+                ?.let {
+                    val newQuantity = it.second + quantity
+                    if (product.isPreferredQuantityAvailable(newQuantity)) {
+                        productAndQuantityList.remove(it)
+                        productAndQuantityList.add(Pair(product, newQuantity))
+                    } else {
+                        throw InsufficientProductsException(product.availableItems)
+                    }
+                } ?: let {
             if (product.isPreferredQuantityAvailable(quantity)) {
                 productAndQuantityList.add(Pair(product, quantity))
             } else {
