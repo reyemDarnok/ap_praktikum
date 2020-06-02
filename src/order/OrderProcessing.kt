@@ -2,7 +2,7 @@ package order
 
 import product.Product
 
-class OrderProcessing : Iterable<Order> {
+class OrderProcessing : MutableIterable<Order> {
     /*** Basisstruktur für verkettete Liste ***/
     // Erstes Element der verketten Liste
     var first: OrderNode? = null
@@ -241,12 +241,14 @@ class OrderProcessing : Iterable<Order> {
     /**
      * Returns an iterator over the elements of this object.
      */
-    override fun iterator(): Iterator<Order> {
+    override fun iterator(): MutableIterator<Order> {
         return OrderProcessingIterator(this)
     }
 
-    class OrderProcessingIterator(orderProcessing: OrderProcessing) : Iterator<Order> {
-        var current = orderProcessing.first
+    class OrderProcessingIterator(private val parent: OrderProcessing) : MutableIterator<Order> {
+        var beforeReturned: OrderNode? = null
+        var lastReturned: OrderNode? = null
+        var current = parent.first
 
         /**
          * Returns `true` if the iteration has more elements.
@@ -260,8 +262,26 @@ class OrderProcessing : Iterable<Order> {
          */
         override fun next(): Order {
             val out = current ?: throw NoSuchElementException()
+            beforeReturned = lastReturned
+            lastReturned = current
             current = current!!.next
             return out.order
         }
+
+        /**
+         * Removes from the underlying collection the last element returned by this iterator.
+         * @throws IllegalStateException if no element has been requested beforehand
+         */
+        override fun remove() {
+            if (beforeReturned != null) {
+                beforeReturned!!.next = current
+            } else {
+                if (lastReturned != null) {
+                    parent.first = current
+                } else {
+                    throw IllegalStateException("Can't remove the latest element before any have been requested")
+                }
+            }
+        }
     }
-    }
+}
