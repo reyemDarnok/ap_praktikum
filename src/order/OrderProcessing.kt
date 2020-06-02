@@ -104,10 +104,13 @@ class OrderProcessing : Iterable<Order> {
     }
 
     private fun sortedMerge(left: OrderNode?, right: OrderNode?): OrderNode? {
-        if (left == null || right == null) {
-            return null
+        if (left == null) {
+            return right
         }
-        return if (left.order <= right.order) {
+        if (right == null) {
+            return left
+        }
+        return if (left.order >= right.order) {
             left.next = sortedMerge(left.next, right)
             left
         } else {
