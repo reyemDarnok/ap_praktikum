@@ -4,6 +4,7 @@ import org.junit.Before
 import org.junit.Test
 import product.InfiniteProduct
 import product.Product
+import product.StockUnit
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -70,5 +71,13 @@ class ShoppingCartTest {
     fun `buyEverything buys everything`() {
         assertEquals(80.0, cart.buyEverything())
         assertTrue(cart.productAndQuantityList.isEmpty())
+    }
+
+    @Test(expected = InsufficientProductsException::class)
+    fun `addProduct checks amounts while adding`() {
+        val product = Product("", 0.2, 0.3, "")
+        product.addStock(StockUnit(10, 5))
+        cart.addProduct(product, 10)
+        cart.addProduct(product, 10)
     }
 }
