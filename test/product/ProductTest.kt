@@ -44,14 +44,14 @@ class ProductTest {
     @Test
     fun `availableItems works`() {
         product.addStock(StockUnit(10, 5))
-        assertEquals(5, product.availableItems)
+        assertEquals(10, product.availableItems)
     }
 
     @Test
     fun `multi stock availableItems works`() {
         product.addStock(StockUnit(10, 5))
         product.addStock(StockUnit(10, 2))
-        assertEquals(7, product.availableItems)
+        assertEquals(20, product.availableItems)
     }
 
     @Test
