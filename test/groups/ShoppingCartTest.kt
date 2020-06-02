@@ -15,6 +15,7 @@ class ShoppingCartTest {
     @Before
     fun init() {
         cart = ShoppingCart()
+        products.clear()
         products.add(InfiniteProduct("1", 2.0, 4.0, ""))
         products.add(InfiniteProduct("2", 3.0, 4.0, ""))
         products.add(InfiniteProduct("3", 2.0, 4.0, ""))

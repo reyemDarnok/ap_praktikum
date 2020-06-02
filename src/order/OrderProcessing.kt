@@ -2,22 +2,38 @@ package order
 
 import product.Product
 
+/**
+ * Represents a linked list of orders (Does not extend MutableList<Order> because of a clash between isEmpty() demanded
+ * by MutableList<Order> and isEmpty demanded by task)
+ */
 class OrderProcessing : MutableIterable<Order> {
-    /*** Basisstruktur für verkettete Liste ***/
-    // Erstes Element der verketten Liste
+    /*** Basic structure for linked list ***/
+
+
+    /**
+     * The head of the linked list
+     */
     var first: OrderNode? = null
 
-    // Ein Knoten der verketteten Liste
+    /**
+     * One node of the list. Standard linkedList node
+     */
     data class OrderNode(val order: Order, var next: OrderNode?)
 
-    /*** Eigenschaften ***/
-    // ist die Liste leer?
+    /*** Properties ***/
+
+    /**
+     * Checks whether the list is empty
+     */
     val isEmpty: Boolean
         get() = first == null
 
-    // Sind die Items absteigend sortiert?
+
+    /**
+     * Checks if this list is sorted
+     */
     fun isSorted(): Boolean {
-        var previous: Order = first?.order ?: return true
+        var previous: Order = first?.order ?: return true //empty lists are sorted
         for (order in this) {
             if (order > previous) {
                 return false
@@ -27,9 +43,12 @@ class OrderProcessing : MutableIterable<Order> {
         return true
     }
 
-    // Berechnet den Gesamtwert aller Bestellungen
+    /**
+     * The total volume of the order, that is, the sum of all prices of all orders
+     */
     val totalVolume: Double
         get() {
+            //return sumByDouble { it.shoppingCart.totalPrice }
             var sum = 0.0
             for (order in this) {
                 sum += order.shoppingCart.totalPrice
@@ -37,7 +56,9 @@ class OrderProcessing : MutableIterable<Order> {
             return sum
         }
 
-    // Anzahl der Bestellungen
+    /**
+     * The number of orders in this list
+     */
     val size: Int
         get() {
             var num = 0
@@ -47,9 +68,14 @@ class OrderProcessing : MutableIterable<Order> {
             return num
         }
 
-    // ** Funktionen zum Einfügen **
+    /**
+     * Functions for insertions
+     */
 
-    // Bestellung hinten anhängen
+    /**
+     * Append order to last node of list
+     * @param order The order to append
+     */
     fun append(order: Order) {
         var last: OrderNode? = first
         while (last?.next != null) {
