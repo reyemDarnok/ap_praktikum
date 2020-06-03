@@ -6,6 +6,18 @@ import product.Product
  * Represents a shopping cart to shop at
  */
 class ShoppingCart {
+    override fun equals(other: Any?): Boolean {
+        return if (other is ShoppingCart) {
+            other.productAndQuantityList == productAndQuantityList
+        } else {
+            false
+        }
+    }
+
+    override fun hashCode(): Int {
+        return productAndQuantityList.hashCode()
+    }
+
     /**
      * Contains all Products with their quantities
      */

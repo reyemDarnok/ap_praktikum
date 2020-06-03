@@ -6,6 +6,8 @@ import product.InfiniteProduct
 import product.Product
 import product.StockUnit
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 class ShoppingCartTest {
@@ -83,5 +85,37 @@ class ShoppingCartTest {
         product.addStock(StockUnit(10, 5))
         cart.addProduct(product, 10)
         cart.addProduct(product, 10)
+    }
+
+    @Test
+    fun `equals of empty carts`() {
+        assertEquals(ShoppingCart(), ShoppingCart())
+    }
+
+    @Test
+    fun `equals of equal carts`() {
+        val other = ShoppingCart().apply {
+            addProduct(products[0], 5)
+            addProduct(products[1], 10)
+            addProduct(products[2], 5)
+        }
+        assertEquals(other, cart)
+    }
+
+    @Test
+    fun `equals of different carts`() {
+        val other = ShoppingCart().apply {
+            addProduct(products[0], 5)
+            addProduct(products[1], 10)
+        }
+        assertNotEquals(other, cart)
+    }
+
+    @Test
+    fun `equals different type`() {
+        val other: Any = "String"
+        val cartAny: Any = cart
+        //Do not change to assertNotEquals - it optimises the equals call away
+        assertFalse(cartAny == other)
     }
 }
