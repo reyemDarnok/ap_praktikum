@@ -401,6 +401,10 @@ class FullOrderProcessingTest {
         assertNotSame(list, list.filter { true })
     }
 
+    /**
+     * List tests start here
+     */
+
     @Test
     fun `removing first and only via iterator`() {
         list.append(order(5))
@@ -468,6 +472,359 @@ class FullOrderProcessingTest {
         val expected = OrderNode(order(1),
                 OrderNode(order(4), null))
         assertEquals(expected, list.first)
+    }
+
+    @Test
+    fun `contains on empty list`() {
+        assertFalse(list.contains(order(0)))
+    }
+
+    @Test
+    fun `contains on list with match`() {
+        list.append(order(1))
+        assertTrue(list.contains(order(1)))
+    }
+
+    @Test
+    fun `contains on list without match`() {
+        list.append(order(0))
+        assertFalse(list.contains(order(1)))
+    }
+
+    @Test
+    fun `containsAll on empty list`() {
+        val searchFor = listOf(order(0), order(1))
+        assertFalse(list.containsAll(searchFor))
+    }
+
+    @Test
+    fun `containsAll no match`() {
+        val searchFor = listOf(order(0), order(1))
+        list.append(order(2))
+        assertFalse(list.containsAll(searchFor))
+    }
+
+    @Test
+    fun `containsAll all in list matches but requested is longer`() {
+        val searchFor = listOf(order(0), order(1))
+        list.append(order(0))
+        assertFalse(list.containsAll(searchFor))
+    }
+
+    @Test
+    fun `containsAll full list match`() {
+        val searchFor = listOf(order(0), order(1))
+        list.append(order(0))
+        list.append(order(1))
+        assertTrue(list.containsAll(searchFor))
+    }
+
+    @Test
+    fun `containsAll matches on part of list`() {
+        val searchFor = listOf(order(0), order(1))
+        list.append(order(0))
+        list.append(order(1))
+        list.append(order(2))
+        assertTrue(list.containsAll(searchFor))
+    }
+
+    @Test
+    fun `containsAll with duplicates in searching collection`() {
+        val searchFor = listOf(order(0), order(0))
+        list.append(order(0))
+        list.append(order(1))
+        assertTrue(list.containsAll(searchFor))
+    }
+
+    @Test
+    fun `add on empty list`() {
+        list.append(order(1))
+        assertEquals(OrderNode(order(1), null), list.first)
+    }
+
+    @Test
+    fun `add twice on empty list`() {
+        list.add(order(5))
+        list.add(order(3))
+        val expected = OrderNode(order(5),
+                OrderNode(order(3), null))
+        assertEquals(expected, list.first)
+    }
+
+    @Test
+    fun `addAll with one Element on empty List`() {
+        val toAdd = listOf(order(0))
+        list.addAll(toAdd)
+        assertEquals(OrderNode(order(0), null), list.first)
+    }
+
+    @Test
+    fun `addAll with multiple Elements on empty list`() {
+        val toAdd = listOf(order(0), order(1))
+        list.addAll(toAdd)
+        val expected = OrderNode(order(0),
+                OrderNode(order(1), null))
+        assertEquals(expected, list.first)
+    }
+
+    @Test
+    fun `addAll with one Element on filled list`() {
+        list.append(order(0))
+        list.append(order(1))
+        val toAdd = listOf(order(2))
+        list.addAll(toAdd)
+        val expected = OrderNode(order(0),
+                OrderNode(order(1),
+                        OrderNode(order(2), null)))
+        assertEquals(expected, list.first)
+    }
+
+    @Test
+    fun `addAll with multiple Elements on filled list`() {
+        list.append(order(0))
+        list.append(order(1))
+        val toAdd = listOf(order(2), order(3))
+        list.addAll(toAdd)
+        val expected = OrderNode(order(0),
+                OrderNode(order(1),
+                        OrderNode(order(2),
+                                OrderNode(order(3), null))))
+        assertEquals(expected, list.first)
+    }
+
+    @Test
+    fun `clear on empty list`() {
+        list.clear()
+        assertNull(list.first)
+    }
+
+    @Test
+    fun `clear on filled list`() {
+        list.append(order(0))
+        list.clear()
+        assertNull(list.first)
+    }
+
+    @Test
+    fun `remove on empty list`() {
+        assertFalse(list.remove(order(0)))
+        assertNull(list.first)
+    }
+
+    @Test
+    fun `remove on list without target`() {
+        list.append(order(0))
+        list.append(order(1))
+        assertFalse(list.remove(order(2)))
+        val expected = OrderNode(order(0),
+                OrderNode(order(1), null))
+        assertEquals(expected, list.first)
+    }
+
+    @Test
+    fun `remove on list with target`() {
+        list.append(order(0))
+        list.append(order(1))
+        assertTrue(list.remove(order(1)))
+        val expected = OrderNode(order(0), null)
+        assertEquals(expected, list.first)
+    }
+
+    @Test
+    fun `retainAll on empty list`() {
+        val toRetain = listOf(order(0), order(1))
+        assertFalse(list.retainAll(toRetain))
+        assertNull(list.first)
+    }
+
+    @Test
+    fun `retainAll everything matches`() {
+        list.append(order(0))
+        list.append(order(1))
+        val toRetain = listOf(order(0), order(1))
+        assertFalse(list.retainAll(toRetain))
+        val expected = OrderNode(order(0),
+                OrderNode(order(1), null))
+        assertEquals(expected, list.first)
+    }
+
+    @Test
+    fun `retainAll toRetain longer than list everything matches`() {
+        list.append(order(0))
+        list.append(order(1))
+        val toRetain = listOf(order(0), order(1), order(2))
+        assertFalse(list.retainAll(toRetain))
+        val expected = OrderNode(order(0),
+                OrderNode(order(1), null))
+        assertEquals(expected, list.first)
+    }
+
+    @Test
+    fun `retainAll with duplicates in list`() {
+        list.append(order(0))
+        list.append(order(0))
+        val toRetain = listOf(order(0))
+        assertFalse(list.retainAll(toRetain))
+        val expected = OrderNode(order(0),
+                OrderNode(order(0), null))
+        assertEquals(expected, list.first)
+    }
+
+    @Test
+    fun `retainAll in list but list longer`() {
+        list.append(order(0))
+        list.append(order(1))
+        val toRetain = listOf(order(0))
+        assertTrue(list.retainAll(toRetain))
+        val expected = OrderNode(order(0), null)
+        assertEquals(expected, list.first)
+    }
+
+    @Test
+    fun `retainAll matches partially`() {
+        list.append(order(0))
+        list.append(order(1))
+        val toRetain = listOf(order(1), order(2))
+        assertTrue(list.retainAll(toRetain))
+        val expected = OrderNode(order(1), null)
+        assertEquals(expected, list.first)
+    }
+
+    @Test
+    fun `retainAll does not match`() {
+        list.append(order(0))
+        list.append(order(1))
+        val toRetain = listOf(order(2))
+        assertTrue(list.retainAll(toRetain))
+        assertNull(list.first)
+    }
+
+    @Test
+    fun `removeAll on empty list`() {
+        val toRemove = listOf(order(0), order(1))
+        assertFalse(list.removeAll(toRemove))
+        assertNull(list.first)
+    }
+
+    @Test
+    fun `removeAll everything matches`() {
+        list.append(order(0))
+        list.append(order(1))
+        val toRemove = listOf(order(0), order(1))
+        assertTrue(list.removeAll(toRemove))
+        assertNull(list.first)
+    }
+
+    @Test
+    fun `removeAll toRemove longer than list everything matches`() {
+        list.append(order(0))
+        list.append(order(1))
+        val toRemove = listOf(order(0), order(1), order(2))
+        assertTrue(list.removeAll(toRemove))
+        assertNull(list.first)
+    }
+
+    @Test
+    fun `removeAll with duplicates in list`() {
+        list.append(order(0))
+        list.append(order(0))
+        val toRemove = listOf(order(0))
+        assertTrue(list.removeAll(toRemove))
+        assertNull(list.first)
+    }
+
+    @Test
+    fun `removeAll in list but list longer`() {
+        list.append(order(0))
+        list.append(order(1))
+        val toRemove = listOf(order(0))
+        assertTrue(list.removeAll(toRemove))
+        val expected = OrderNode(order(1), null)
+        assertEquals(expected, list.first)
+    }
+
+    @Test
+    fun `removeAll matches partially`() {
+        list.append(order(0))
+        list.append(order(1))
+        val toRemove = listOf(order(1), order(2))
+        assertTrue(list.removeAll(toRemove))
+        val expected = OrderNode(order(0), null)
+        assertEquals(expected, list.first)
+    }
+
+    @Test
+    fun `removeAll does not match`() {
+        list.append(order(0))
+        list.append(order(1))
+        val toRetain = listOf(order(2))
+        assertFalse(list.removeAll(toRetain))
+        val expected = OrderNode(order(0),
+                OrderNode(order(1), null))
+        assertEquals(expected, list.first)
+    }
+
+    @Test
+    fun `equals wrong class`() {
+        assertFalse(list.equals("String"))
+    }
+
+    @Test
+    fun `equals is null safe`() {
+        assertNotEquals(list, null as OrderProcessing?)
+    }
+
+    @Test
+    fun `equals identity test`() {
+        assertEquals(list, list)
+    }
+
+    @Test
+    fun `equals true on empty lists`() {
+        assertEquals(list, OrderProcessing())
+    }
+
+    @Test
+    fun `equals true with same orders in list`() {
+        list.append(order(0))
+        val other = OrderProcessing().apply { append(order(0)) }
+        assertEquals(list, other)
+    }
+
+    @Test
+    fun `equals false with different orders in list`() {
+        list.append(order(0))
+        val other = OrderProcessing().apply { append(order(1)) }
+        assertNotEquals(list, other)
+    }
+
+    @Test
+    fun `equals false with different ordering of list`() {
+        list.apply {
+            append(order(0))
+            append(order(1))
+        }
+        val other = OrderProcessing().apply {
+            append(order(1))
+            append(order(0))
+        }
+        assertNotEquals(list, other)
+    }
+
+    @Test
+    fun `hashcode of empty list`() {
+        assertEquals(list.hashCode(), 0)
+    }
+
+    @Test
+    fun `hashcode of filled list`() {
+        list.apply {
+            append(order(0))
+            append(order(1))
+        }
+        val expected = OrderNode(order(0),
+                OrderNode(order(1), null))
+        assertEquals(list.hashCode(), expected.hashCode())
     }
 
 }

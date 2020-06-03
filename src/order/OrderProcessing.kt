@@ -6,19 +6,19 @@ import product.Product
  * Represents a linked list of orders (Does not extend MutableList<Order> because of a clash between isEmpty() demanded
  * by MutableList<Order> and isEmpty demanded by task)
  */
-class OrderProcessing : MutableIterable<Order> {
+class OrderProcessing : MutableIterable<Order> /*, MutableList<Order>*/ {
     /*** Basic structure for linked list ***/
 
+    /**
+     * One node of the list. Standard linkedList node
+     */
+    data class OrderNode(val order: Order, var next: OrderNode?)
 
     /**
      * The head of the linked list
      */
     var first: OrderNode? = null
 
-    /**
-     * One node of the list. Standard linkedList node
-     */
-    data class OrderNode(val order: Order, var next: OrderNode?)
 
     /*** Properties ***/
 
@@ -295,6 +295,10 @@ class OrderProcessing : MutableIterable<Order> {
     }
 
     /**
+     * Implement members of interface
+     */
+
+    /**
      * Returns an iterator over the elements of this object.
      */
     override fun iterator(): MutableIterator<Order> {
@@ -455,5 +459,17 @@ class OrderProcessing : MutableIterable<Order> {
             }
         }
         return modified
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is OrderProcessing) {
+            first == other.first
+        } else {
+            false
+        }
+    }
+
+    override fun hashCode(): Int {
+        return first?.hashCode() ?: 0
     }
 }
