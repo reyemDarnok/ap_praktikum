@@ -9,10 +9,11 @@ class WarehouseTest {
 
     @Before
     fun init() {
-        warehouse = Warehouse()
-        warehouse.fillWarehouse("1", 1.0, "desc1")
-        warehouse.fillWarehouse("2", 2.0, "desc2")
-        warehouse.fillWarehouse("3", 3.0, "desc3")
+        warehouse = Warehouse().apply {
+            fillWarehouse("1", 1.0, "desc1")
+            fillWarehouse("2", 2.0, "desc2")
+            fillWarehouse("3", 3.0, "desc3")
+        }
     }
 
     @Test

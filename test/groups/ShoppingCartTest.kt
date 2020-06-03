@@ -14,14 +14,17 @@ class ShoppingCartTest {
 
     @Before
     fun init() {
-        cart = ShoppingCart()
-        products.clear()
-        products.add(InfiniteProduct("1", 2.0, 4.0, ""))
-        products.add(InfiniteProduct("2", 3.0, 4.0, ""))
-        products.add(InfiniteProduct("3", 2.0, 4.0, ""))
-        cart.addProduct(products[0], 5)
-        cart.addProduct(products[1], 10)
-        cart.addProduct(products[2], 5)
+        products = mutableListOf<Product>().apply {
+            clear()
+            add(InfiniteProduct("1", 2.0, 4.0, ""))
+            add(InfiniteProduct("2", 3.0, 4.0, ""))
+            add(InfiniteProduct("3", 2.0, 4.0, ""))
+        }
+        cart = ShoppingCart().apply {
+            addProduct(products[0], 5)
+            addProduct(products[1], 10)
+            addProduct(products[2], 5)
+        }
     }
 
     @Test
