@@ -70,14 +70,16 @@ class Warehouse : Iterable<Product> {
      */
     fun fillWarehouse(productName: String, basePrice: Double, productDescription: String,
                       chargeOnTop: Double = 50.0, initialStockUnits: Int = 3) {
-        val product = Product.create(productName, basePrice, basePrice * (1 + chargeOnTop / 100), productDescription)
-        for (i in 0 until initialStockUnits) {
-            product.addStock(StockUnit(Random.nextInt(0, 100), Random.nextInt(0, 20)))
-        }
-        product.addReview(PlainReview(Random.nextInt()))
-        product.addReview(LimitedReview(Random.nextDouble(), String(Random.nextBytes(Random.nextInt(0, 255)))))
-        product.addReview(SmartReview(Random.nextInt(0, 5)))
-        products.add(product)
+        products.add(
+                Product.create(productName, basePrice, basePrice * (1 + chargeOnTop / 100), productDescription).apply {
+                    for (i in 0 until initialStockUnits) {
+                        addStock(StockUnit(Random.nextInt(0, 100), Random.nextInt(0, 20)))
+                    }
+                    addReview(PlainReview(Random.nextInt()))
+                    addReview(LimitedReview(Random.nextDouble(), String(Random.nextBytes(Random.nextInt(0, 255)))))
+                    addReview(SmartReview(Random.nextInt(0, 5)))
+                }
+        )
     }
 
     /**
