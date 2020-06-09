@@ -3,10 +3,9 @@ package order
 import product.Product
 
 /**
- * Represents a linked list of orders (Does not extend MutableList<Order> because of a clash between isEmpty() demanded
- * by MutableList<Order> and isEmpty demanded by task)
+ * Represents a linked list of orders
  */
-class OrderProcessing : MutableIterable<Order> /*, MutableList<Order>*/ {
+class OrderProcessing : MutableIterable<Order> {
     /*** Basic structure for linked list ***/
 
     /**
