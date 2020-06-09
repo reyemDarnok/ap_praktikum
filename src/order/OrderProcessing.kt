@@ -219,21 +219,13 @@ class OrderProcessing : MutableIterable<Order> {
         if (isEmpty) {
             return
         }
-        while (first?.order?.address?.city == city) {
-            first?.order?.shoppingCart?.buyEverything()
-            first = first?.next
-        }
-        var previous: OrderNode? = first
-        if (first?.next != null) {
-            var current: OrderNode? = first?.next
-            while (current != null) {
-                if (current.order.address.city == city) {
-                    current.order.shoppingCart.buyEverything()
-                    previous?.next = current.next
-                } else {
-                    previous = current
+        iterator().apply {
+            while (hasNext()) {
+                val current = next()
+                if (current.address.city == city) {
+                    current.shoppingCart.buyEverything()
+                    remove()
                 }
-                current = current.next
             }
         }
     }
