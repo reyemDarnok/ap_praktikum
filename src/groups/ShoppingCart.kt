@@ -5,7 +5,7 @@ import product.Product
 /**
  * Represents a shopping cart to shop at
  */
-class ShoppingCart {
+open class ShoppingCart {
     override fun equals(other: Any?): Boolean {
         return if (other is ShoppingCart) {
             other.productAndQuantityList == productAndQuantityList
@@ -21,7 +21,7 @@ class ShoppingCart {
     /**
      * Contains all Products with their quantities
      */
-    val productAndQuantityList: ArrayList<Pair<Product, Int>> = ArrayList()
+    open val productAndQuantityList: MutableList<Pair<Product, Int>> = mutableListOf()
 
     /**
      * Check if everything can be bought
@@ -34,7 +34,7 @@ class ShoppingCart {
     /**
      * The total price to buy everything in the cart
      */
-    val totalPrice: Double
+    open val totalPrice: Double
         get() = productAndQuantityList.sumByDouble { it.first.salesPrice * it.second }
 
     /**
@@ -91,7 +91,7 @@ class ShoppingCart {
      * Buys everything to the extent it is available.
      * @return The price for everything bought. THIS CAN DEVIATE FROM totalPrice IF SOME ITEMS ARE UNAVAILABLE
      */
-    fun buyEverything(): Double {
+    open fun buyEverything(): Double {
         val price = productAndQuantityList.sumByDouble { it.first.takeItems(it.second) * it.first.salesPrice }
         clear()
         return price

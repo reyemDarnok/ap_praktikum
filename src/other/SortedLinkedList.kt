@@ -1,4 +1,4 @@
-package order
+package other
 
 class SortedLinkedList<Type : Comparable<Type>> : MutableList<Type> {
 

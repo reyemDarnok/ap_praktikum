@@ -1,5 +1,6 @@
 package order
 
+import groups.MockCart
 import groups.ShoppingCart
 import order.OrderProcessing.OrderNode
 import org.junit.Before
@@ -22,9 +23,7 @@ class FullOrderProcessingTest {
             if (index !in indices) {
                 for (i in size..index) {
                     add(i,
-                            ShoppingCart().apply {
-                                addProduct(InfiniteProduct("", 0.1, index.toDouble(), ""), i)
-                            }
+                            MockCart(i.toDouble())
                     )
                 }
             }
@@ -93,7 +92,7 @@ class FullOrderProcessingTest {
         list.apply {
             append(order(3))
             append(order(4))
-            assertEquals(25.0, totalVolume)
+            assertEquals(7.0, totalVolume)
         }
     }
 
@@ -254,6 +253,7 @@ class FullOrderProcessingTest {
         list.apply {
             append(order(5))
             processFirst()
+            assertEquals(1, (order(5).shoppingCart as MockCart).boughtTimes)
             assertNull(first)
         }
     }
@@ -264,6 +264,8 @@ class FullOrderProcessingTest {
             append(order(5))
             append(order(3))
             processFirst()
+            assertEquals(1, (order(5).shoppingCart as MockCart).boughtTimes)
+            assertEquals(0, (order(3).shoppingCart as MockCart).boughtTimes)
             assertEquals(OrderNode(order(3), null), first)
         }
     }
@@ -281,6 +283,7 @@ class FullOrderProcessingTest {
         list.apply {
             append(order(10))
             processHighest()
+            assertEquals(1, (order(10).shoppingCart as MockCart).boughtTimes)
             assertNull(first)
         }
     }
@@ -294,6 +297,9 @@ class FullOrderProcessingTest {
             append(order(0))
             append(order(5))
             processHighest()
+            assertEquals(1, (order(10).shoppingCart as MockCart).boughtTimes)
+            assertEquals(0, (order(5).shoppingCart as MockCart).boughtTimes)
+            assertEquals(0, (order(0).shoppingCart as MockCart).boughtTimes)
             assertEquals(expected, first)
         }
     }
@@ -307,6 +313,9 @@ class FullOrderProcessingTest {
             append(order(1))
             append(order(5))
             processHighest()
+            assertEquals(1, (order(5).shoppingCart as MockCart).boughtTimes)
+            assertEquals(0, (order(2).shoppingCart as MockCart).boughtTimes)
+            assertEquals(0, (order(1).shoppingCart as MockCart).boughtTimes)
             assertEquals(expected, first)
         }
     }
@@ -320,6 +329,9 @@ class FullOrderProcessingTest {
             append(order(5))
             append(order(2))
             processHighest()
+            assertEquals(1, (order(5).shoppingCart as MockCart).boughtTimes)
+            assertEquals(0, (order(4).shoppingCart as MockCart).boughtTimes)
+            assertEquals(0, (order(2).shoppingCart as MockCart).boughtTimes)
             assertEquals(expected, first)
         }
     }
@@ -332,6 +344,8 @@ class FullOrderProcessingTest {
             append(order(4))
             append(order(2))
             processAllFor("some city")
+            assertEquals(0, (order(4).shoppingCart as MockCart).boughtTimes)
+            assertEquals(0, (order(2).shoppingCart as MockCart).boughtTimes)
             assertEquals(expected, first)
         }
 
@@ -347,6 +361,10 @@ class FullOrderProcessingTest {
             append(order(3, "target"))
             append(order(5))
             processAllFor("target")
+            assertEquals(1, (order(2).shoppingCart as MockCart).boughtTimes)
+            assertEquals(1, (order(3).shoppingCart as MockCart).boughtTimes)
+            assertEquals(0, (order(4).shoppingCart as MockCart).boughtTimes)
+            assertEquals(0, (order(5).shoppingCart as MockCart).boughtTimes)
             assertEquals(expected, first)
         }
     }
@@ -358,6 +376,8 @@ class FullOrderProcessingTest {
             append(order(1))
             processAllFor("")
             assertTrue(isEmpty)
+            assertEquals(1, (order(2).shoppingCart as MockCart).boughtTimes)
+            assertEquals(1, (order(1).shoppingCart as MockCart).boughtTimes)
         }
     }
 
@@ -383,6 +403,8 @@ class FullOrderProcessingTest {
             append(order(5))
             append(order(3))
             processAll()
+            assertEquals(1, (order(5).shoppingCart as MockCart).boughtTimes)
+            assertEquals(1, (order(3).shoppingCart as MockCart).boughtTimes)
             assertTrue(isEmpty)
         }
     }
@@ -394,7 +416,7 @@ class FullOrderProcessingTest {
 
     @Test
     fun `analyze all on filled list`() {
-        val expected = "4|9|"
+        val expected = "2|3|"
         list.apply {
             append(order(2))
             append(order(3))
